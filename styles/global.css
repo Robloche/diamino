@@ -1,9 +1,14 @@
+@import "reset.css";
+
+:root {
+    --diamino-height: 100px;
+    --diamino-width: 50px;
+}
+
 html,
 body {
-  padding: 0;
-  margin: 0;
-  font-family:
-    Inter,
+    accent-color: #3a96dd;
+    font-family: Inter,
     -apple-system,
     BlinkMacSystemFont,
     Segoe UI,
@@ -15,18 +20,6 @@ body {
     Droid Sans,
     Helvetica Neue,
     sans-serif;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-img {
-  max-width: 100%;
-  height: auto;
+    margin: 0;
+    padding: 0;
 }

@@ -1,0 +1,132 @@
+/* Source: https://codepen.io/LandonSchropp/pen/KpzzGo */
+.die {
+    --face-size: 64px;
+    --pip-size: 12px;
+    --face-padding: 10px;
+    --pip-margin: 0px;
+    --border-radius: 10%;
+
+    background-color: transparent;
+    border: 0;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    padding: 0;
+    position: relative;
+}
+
+.die:hover {
+    outline: 4px solid #3a96dd;
+}
+
+.die.kept {
+    cursor: default;
+}
+
+.face-1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.face-2 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.face-2 .pip:nth-of-type(2) {
+    align-self: flex-end;
+}
+
+.face-3 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.face-3 .pip:nth-of-type(2) {
+    align-self: center;
+}
+
+.face-3 .pip:nth-of-type(3) {
+    align-self: flex-end;
+}
+
+.face-4 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.face-4 .column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.face-5 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.face-5 .column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.face-5 .column:nth-of-type(2) {
+    justify-content: center;
+}
+
+.face-6 {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.die [class*="face"] {
+    background-color: #e7e7e7;
+    border-radius: var(--border-radius);
+    box-shadow: inset 0 5px white,
+    inset 0 -5px #bbb,
+    inset 5px 0 #d7d7d7,
+    inset -5px 0 #d7d7d7;
+    height: var(--face-size);
+    object-fit: contain;
+    padding: var(--face-padding);
+    width: var(--face-size);
+}
+
+.die.chosen [class*="face"] {
+    background-color: #bdbdbd;
+}
+
+.die .chosenOverlay {
+    background-color: rgb(58 150 221 / 60%);
+    border-radius: var(--border-radius);
+    height: 100%;
+    inset: 0;
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 5;
+}
+
+.die.chosen .chosenOverlay {
+    opacity: 1;
+}
+
+.pip {
+    background-color: #333;
+    border-radius: 50%;
+    box-shadow: inset 0 3px #111, inset 0 -3px #555;
+    display: block;
+    height: var(--pip-size);
+    margin: var(--pip-margin);
+    width: var(--pip-size);
+    z-index: 10;
+}
+
+.diamond {
+    display: block;
+    font-size: 2rem;
+    z-index: 10;
+}

@@ -1,0 +1,24 @@
+.diamino {
+    align-items: stretch;
+    background-color: blanchedalmond;
+    border-radius: 6px;
+    box-shadow: 0 0 2px 1px hsl(36 100% 35% / 1);
+    display: flex;
+    flex-direction: column;
+    height: var(--diamino-height);
+    width: var(--diamino-width);
+}
+
+.number {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.points {
+    align-items: center;
+    display: flex;
+    flex-basis: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+}

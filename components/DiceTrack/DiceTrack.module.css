@@ -1,0 +1,47 @@
+.diceTrack {
+    --border-width: 24px;
+
+    align-items: center;
+    background-color: #006400;
+    border: var(--border-width) solid #422204;
+    border-radius: 64px;
+    grid-template-columns: 1fr 1fr;
+    display: grid;
+    height: calc(200px + var(--border-width) * 2);
+    justify-content: stretch;
+    position: relative;
+    width: calc(var(--diamino-width) * 16 + 2px * 15);
+}
+
+.keptArea, .playArea {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    grid-gap: 8px;
+    height: 100%;
+    justify-content: center;
+    padding: 30px;
+}
+
+.keptArea {
+    border-inline-end: 4px #004600 dashed;
+}
+
+.gameNameWrapper {
+    align-items: center;
+    display: flex;
+    height: var(--border-width);
+    justify-content: center;
+    left: 0;
+    position: absolute;
+    top: calc(var(--border-width) * -1);
+    width: 100%;
+}
+
+.gameName {
+    color: rgb(255 255 255 / 10%);
+    font-size: .9rem;
+    font-weight: 800;
+    letter-spacing: .4rem;
+    text-shadow: 0 1px 0 rgb(255 255 255 / 30%), 0 -1px 0 rgb(0 0 0 / 70%);
+}
