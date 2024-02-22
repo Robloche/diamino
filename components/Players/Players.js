@@ -9,7 +9,7 @@ const Players = () => {
   return (
     <div className={styles.players}>
       {players.map((player, i) => (
-        <Player key={i} player={player} />
+        <Player id={i} key={i} player={player} />
       ))}
     </div>
   );

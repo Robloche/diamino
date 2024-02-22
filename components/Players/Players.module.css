@@ -1,3 +1,6 @@
 .players {
-    border: 1px darkcyan solid;
+    align-items: center;
+    column-gap: 10px;
+    display: flex;
+    justify-content: stretch;
 }

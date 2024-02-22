@@ -1,12 +1,12 @@
-import { loadSettings, storeSettings } from "@/helpers/settings";
-import { setRowColumnCssValues, setTileBackColorCssValue } from "@/helpers/css";
+import { loadSettings, storeSettings } from "../helpers/settings";
 import React from "react";
-import Settings from "@/components/Settings";
+import Settings from "../components/Settings";
 
 export const SettingsContext = React.createContext();
 
 const DEFAULT_SETTINGS = Object.freeze({
   sound: true,
+  stealHint: true,
 });
 
 const SettingsProvider = ({ children }) => {

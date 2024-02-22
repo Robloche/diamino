@@ -1,0 +1,19 @@
+.content {
+    align-items: stretch;
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--margin-s);
+}
+
+.content h1 {
+    font-size: 1.6rem;
+    grid-column: auto / span 2;
+    text-align: center;
+}
+
+.content .hint{
+    background-color: var(--accent-color-lighter);
+    border-radius: var(--border-radius-s);
+    font-size: .9rem;
+    padding: 10px;
+}

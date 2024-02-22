@@ -1,8 +1,8 @@
-import React from 'react';
-import { Sound } from '@/helpers/types';
-import useSound from '@/hooks/use-sound';
+import React from "react";
+import { Sound } from "../../helpers/types";
+import useSound from "../../hooks/use-sound";
 
-const Button = ({ children, onClick, ...rest }) => {
+const AudioButton = ({ children, onClick, ...rest }) => {
   const { play } = useSound();
 
   const handleOnClick = React.useCallback(() => {
@@ -17,4 +17,4 @@ const Button = ({ children, onClick, ...rest }) => {
   );
 };
 
-export default Button;
+export default AudioButton;

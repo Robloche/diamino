@@ -1,20 +1,24 @@
 /* Source: https://codepen.io/LandonSchropp/pen/KpzzGo */
 .die {
-    --face-size: 64px;
-    --pip-size: 12px;
-    --face-padding: 10px;
-    --pip-margin: 0px;
-    --border-radius: 10%;
-
     background-color: transparent;
     border: 0;
-    border-radius: var(--border-radius);
+    border-radius: var(--die-border-radius);
     cursor: pointer;
     padding: 0;
     position: relative;
+    transition: opacity 200ms ease-out;
+    z-index: 10;
 }
 
-.die:hover {
+.die.disabled {
+    opacity: .7;
+}
+
+.die.forbidden {
+    cursor: default;
+}
+
+.die:not(.forbidden):hover {
     outline: 4px solid #3a96dd;
 }
 
@@ -84,24 +88,20 @@
 
 .die [class*="face"] {
     background-color: #e7e7e7;
-    border-radius: var(--border-radius);
+    border-radius: var(--die-border-radius);
     box-shadow: inset 0 5px white,
     inset 0 -5px #bbb,
     inset 5px 0 #d7d7d7,
     inset -5px 0 #d7d7d7;
-    height: var(--face-size);
+    height: var(--die-size);
     object-fit: contain;
-    padding: var(--face-padding);
-    width: var(--face-size);
-}
-
-.die.chosen [class*="face"] {
-    background-color: #bdbdbd;
+    padding: var(--die-padding);
+    width: var(--die-size);
 }
 
 .die .chosenOverlay {
     background-color: rgb(58 150 221 / 60%);
-    border-radius: var(--border-radius);
+    border-radius: var(--die-border-radius);
     height: 100%;
     inset: 0;
     opacity: 0;
@@ -119,9 +119,9 @@
     border-radius: 50%;
     box-shadow: inset 0 3px #111, inset 0 -3px #555;
     display: block;
-    height: var(--pip-size);
-    margin: var(--pip-margin);
-    width: var(--pip-size);
+    height: var(--die-pip-size);
+    margin: var(--die-pip-margin);
+    width: var(--die-pip-size);
     z-index: 10;
 }
 

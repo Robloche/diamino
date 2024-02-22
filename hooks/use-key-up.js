@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
+import React from "react";
 
 const useKeyUp = (key, callback) => {
-  useEffect(() => {
+  React.useEffect(() => {
     const handleKeyUp = (event) => {
       const { code } = event;
 
@@ -11,10 +11,10 @@ const useKeyUp = (key, callback) => {
       }
     };
 
-    window.addEventListener('keyup', handleKeyUp);
+    window.addEventListener("keyup", handleKeyUp);
 
     return () => {
-      window.removeEventListener('keyup', handleKeyUp);
+      window.removeEventListener("keyup", handleKeyUp);
     };
   }, [callback, key]);
 };

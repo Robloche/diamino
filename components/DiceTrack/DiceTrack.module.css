@@ -5,9 +5,9 @@
     background-color: #006400;
     border: var(--border-width) solid #422204;
     border-radius: 64px;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 4px 1fr;
     display: grid;
-    height: calc(200px + var(--border-width) * 2);
+    height: calc(var(--die-size) * 2 + var(--padding-s) + var(--padding-l) * 2 + var(--border-width) * 2);
     justify-content: stretch;
     position: relative;
     width: calc(var(--diamino-width) * 16 + 2px * 15);
@@ -17,14 +17,16 @@
     align-items: center;
     display: flex;
     flex-wrap: wrap;
-    grid-gap: 8px;
+    grid-gap: var(--padding-s);
     height: 100%;
     justify-content: center;
-    padding: 30px;
+    padding: var(--padding-l);
+    position: relative;
 }
 
-.keptArea {
+.separator {
     border-inline-end: 4px #004600 dashed;
+    height: 100%;
 }
 
 .gameNameWrapper {
@@ -32,9 +34,9 @@
     display: flex;
     height: var(--border-width);
     justify-content: center;
-    left: 0;
+    inset-inline-start: 0;
     position: absolute;
-    top: calc(var(--border-width) * -1);
+    inset-block-start: calc(var(--border-width) * -1);
     width: 100%;
 }
 
@@ -44,4 +46,113 @@
     font-weight: 800;
     letter-spacing: .4rem;
     text-shadow: 0 1px 0 rgb(255 255 255 / 30%), 0 -1px 0 rgb(0 0 0 / 70%);
+}
+
+/*.actions {*/
+/*    align-items: center;*/
+/*    column-gap: var(--padding-l);*/
+/*    display: flex;*/
+/*    inset-block-end: calc(var(--border-width) * -1.3);*/
+/*    justify-content: center;*/
+/*    position: absolute;*/
+/*    width: 100%;*/
+/*    z-index: 0;*/
+/*}*/
+
+.playArea .buttonWrapper {
+    align-items: center;
+    display: flex;
+    inset: 0;
+    justify-content: center;
+    position: absolute;
+}
+
+.diceTrack .diceAction {
+    align-items: center;
+    display: flex;
+    z-index: 10;
+}
+
+.diceTrack .keepDice span {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-inline-end: -8px;
+}
+
+.diceTrack .throwDice img, .diceTrack .keepDice span {
+    transition: transform 200ms ease-out;
+}
+
+.diceTrack .keepDice {
+    --width: 90px;
+
+    align-items: center;
+    border-radius: 24px;
+    display: flex;
+    justify-content: center;
+    left: calc(50% - var(--width) / 2);
+    position: absolute;
+    top: 70%;
+    width: var(--width);
+}
+
+.diceTrack .throwDice {
+    align-items: center;
+    border-radius: 50%;
+    height: 3rem;
+    justify-content: center;
+    padding: 0;
+    width: 3rem;
+}
+
+.diceTrack .throwDice:hover img, .diceTrack .keepDice:not(:disabled):hover span {
+    transform: scale3d(1.3, 1.3, 1);
+}
+
+.diceTrack .keepDice:disabled .icon {
+    opacity: .6;
+}
+
+.diceTrack .throwDice:disabled {
+    display: none;
+}
+
+.icon {
+    height: 2rem;
+    width: 2rem;
+}
+
+.totalValue {
+    --width: 60px;
+
+    align-items: center;
+    background-color: #004600;
+    border-radius: 10px;
+    color: #fff;
+    display: flex;
+    font-size: 24px;
+    font-weight: bold;
+    justify-content: center;
+    left: calc(50% - var(--width) / 2);
+    padding: var(--padding-xs);
+    position: absolute;
+    width: var(--width);
+}
+
+.hasDiamond {
+    inset-block-start: var(--margin-s);
+    inset-inline-end: var(--margin-s);
+    position: absolute;
+}
+
+.hasDiamond.hidden {
+    opacity: 0;
+}
+
+.hasDiamond img {
+    height: 100%;
+    inset: 0;
+    position: absolute;
+    width: 100%;
 }

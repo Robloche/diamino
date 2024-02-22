@@ -1,8 +1,9 @@
+import AudioButton from "../AudioButton";
+import { GameState } from "../../helpers/types";
 import { GameStateContext } from "../../providers/GameStateProvider";
 import React from "react";
 import clsx from "clsx";
 import styles from "./Die.module.css";
-import { DieState } from "../../helpers/types";
 
 const renderDiamond = () => {
   return <span className={styles.diamond}>💎</span>;
@@ -38,32 +39,62 @@ const renderElement = (score) => {
   );
 };
 
-const Die = ({ die }) => {
-  const { chooseValue, chosenValue, resetDie } =
-    React.useContext(GameStateContext);
-  const { id, state, value } = die;
+const Die = ({ die, isDisabled = false }) => {
+  const {
+    chooseValue,
+    chosenValue,
+    forbiddenValues,
+    gameState,
+    resetChosenValue,
+  } = React.useContext(GameStateContext);
+  const { value } = die;
 
   const handleOnClick = React.useCallback(() => {
-    if (chosenValue !== -1 && value !== chosenValue) {
-      // Player can only deselect chosen dice
+    if (
+      gameState === GameState.PlayingActionChoice ||
+      (chosenValue !== -1 && value !== chosenValue) ||
+      forbiddenValues.has(value)
+    ) {
+      // Player can only deselect chosen dice, and cannot pick a previously kept value
       return;
     }
 
-    if (state === DieState.Normal) {
-      chooseValue(id, value);
+    if (chosenValue === -1) {
+      chooseValue(value);
     } else {
-      resetDie(id);
+      resetChosenValue();
     }
-  }, [chooseValue, chosenValue, resetDie, value, state]);
+  }, [
+    chooseValue,
+    chosenValue,
+    forbiddenValues,
+    gameState,
+    resetChosenValue,
+    value,
+  ]);
+
+  const isChosen = value === chosenValue;
+  const isForbidden =
+    gameState === GameState.PlayingActionChoice || forbiddenValues.has(value);
+
+  console.log("Forbidden values:");
+  console.log(forbiddenValues);
+
+  console.log(`isForbidden: ${isForbidden}`);
 
   return (
-    <button
-      className={clsx(styles.die, styles[state.toLowerCase()])}
+    <AudioButton
+      className={clsx(
+        styles.die,
+        isChosen && styles.chosen,
+        isForbidden && styles.forbidden,
+        isDisabled && styles.disabled,
+      )}
       onClick={handleOnClick}
     >
       {renderElement(value)}
-      {state === DieState.Chosen && <div className={styles.chosenOverlay} />}
-    </button>
+      {isChosen && <div className={styles.chosenOverlay} />}
+    </AudioButton>
   );
 };
 

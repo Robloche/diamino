@@ -1,13 +1,17 @@
+import AudioButton from "../AudioButton";
 import Image from "next/image";
-import Portal from "@/components/Portal";
+import Portal from "../Portal";
 import React from "react";
 import ReactFocusLock from "react-focus-lock";
-import closeIcon from "../assets/x.svg";
+import closeIcon from "../../assets/x.svg";
+import clsx from 'clsx';
 import styles from "./Modal.module.css";
-import useKeyUp from "@/hooks/use-key-up";
+import useKeyUp from "../../hooks/use-key-up";
 
-const Modal = ({ children, label, onClose }) => {
-  useKeyUp("Escape", onClose);
+const Modal = ({ canClose = true, children, label, onClose }) => {
+  if (canClose) {
+    useKeyUp("Escape", onClose);
+  }
 
   return (
     <Portal>
@@ -19,9 +23,14 @@ const Modal = ({ children, label, onClose }) => {
           role="dialog"
         >
           {children}
-          <button className={styles.closeBtn} onClick={onClose}>
-            <Image alt="Close icon" src={closeIcon} />
-          </button>
+          {canClose && (
+            <AudioButton
+              className={clsx("action", styles.closeBtn)}
+              onClick={onClose}
+            >
+              <Image alt="Close icon" src={closeIcon} />
+            </AudioButton>
+          )}
         </div>
       </ReactFocusLock>
     </Portal>

@@ -2,4 +2,21 @@
     align-items: center;
     column-gap: 2px;
     display: flex;
+    position: relative;
+}
+
+.ghost {
+    align-items: flex-start;
+    background-color: rgb(255 0 0 / 10%);
+    border: 2px dashed #6e0000;
+    border-radius: 6px;
+    color: #6e0000;
+    display: flex;
+    font-size: 2rem;
+    font-weight: bold;
+    height: calc(var(--diamino-height) + 2px);
+    justify-content: center;
+    left: calc(var(--diamino-width) * -1 - 8px);
+    position: absolute;
+    width: calc(var(--diamino-width) + 4px);
 }

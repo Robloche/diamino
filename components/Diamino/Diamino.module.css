@@ -1,12 +1,24 @@
 .diamino {
     align-items: stretch;
     background-color: blanchedalmond;
+    border: 0;
     border-radius: 6px;
     box-shadow: 0 0 2px 1px hsl(36 100% 35% / 1);
     display: flex;
     flex-direction: column;
     height: var(--diamino-height);
+    padding: 0;
+    transition: transform 200ms ease-out;
     width: var(--diamino-width);
+}
+
+.pickable {
+    cursor: pointer;
+    transform: scale3d(1.1, 1.1, 1);
+}
+
+.pickable:hover{
+    background-color: #ffdfab;
 }
 
 .number {

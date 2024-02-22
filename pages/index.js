@@ -1,7 +1,11 @@
+import ClientOnly from "../components/ClientOnly";
 import Game from "../components/Game";
 import Head from "next/head";
-import Header from '../components/Header';
+import SettingsProvider from "../providers/SettingsProvider";
+import { enableMapSet } from "immer";
 import styles from "../styles/Home.module.css";
+
+enableMapSet();
 
 export default function Home() {
   return (
@@ -13,7 +17,11 @@ export default function Home() {
 
       {/*<Header />*/}
 
-      <Game />
+      <SettingsProvider>
+        <ClientOnly>
+          <Game />
+        </ClientOnly>
+      </SettingsProvider>
     </div>
   );
 }
