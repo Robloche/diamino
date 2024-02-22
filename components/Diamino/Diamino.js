@@ -5,16 +5,30 @@ import React from "react";
 import clsx from "clsx";
 import styles from "./Diamino.module.css";
 
-const Diamino = ({ diamino }) => {
-  const { diceSum, pickDiamino } = React.useContext(GameStateContext);
+const Diamino = ({ diamino, isPickable = false, isStealable = false }) => {
+  const { hasDiamond, pickDiamino, stealDiamino } =
+    React.useContext(GameStateContext);
   const { number, points, state } = diamino;
 
   const handleOnClick = React.useCallback(() => {
-    if (number === diceSum) {
+    // if (!hasDiamond) {
+    //   return;
+    // }
+    if (isPickable) {
       // Pick diamino and end turn
       pickDiamino(diamino);
+
+      // DEBUG
+      return;
     }
-  }, [diamino, diceSum]);
+
+    stealDiamino(diamino);
+
+    if (isStealable) {
+      // Steal the top diamino from a player
+      stealDiamino(diamino);
+    }
+  }, [diamino, isPickable, pickDiamino, stealDiamino]);
 
   const diamonds = [];
   for (let i = 0; i < points; ++i) {
@@ -27,7 +41,12 @@ const Diamino = ({ diamino }) => {
 
   return (
     <AudioButton
-      className={clsx(styles.diamino, number === diceSum && styles.pickable)}
+      className={clsx(
+        styles.diamino,
+        isPickable && styles.pickable,
+        isStealable && styles.stealable,
+        hasDiamond && styles.hasDiamond,
+      )}
       onClick={handleOnClick}
     >
       <div className={styles.number}>{number}</div>

@@ -5,6 +5,7 @@
     background-color: #006400;
     border: var(--border-width) solid #422204;
     border-radius: 64px;
+    box-shadow: inset 0 3px rgb(0 0 0 / 30%), inset 0 -3px rgb(255 255 255 / 30%);
     grid-template-columns: 1fr 4px 1fr;
     display: grid;
     height: calc(var(--die-size) * 2 + var(--padding-s) + var(--padding-l) * 2 + var(--border-width) * 2);
@@ -48,17 +49,6 @@
     text-shadow: 0 1px 0 rgb(255 255 255 / 30%), 0 -1px 0 rgb(0 0 0 / 70%);
 }
 
-/*.actions {*/
-/*    align-items: center;*/
-/*    column-gap: var(--padding-l);*/
-/*    display: flex;*/
-/*    inset-block-end: calc(var(--border-width) * -1.3);*/
-/*    justify-content: center;*/
-/*    position: absolute;*/
-/*    width: 100%;*/
-/*    z-index: 0;*/
-/*}*/
-
 .playArea .buttonWrapper {
     align-items: center;
     display: flex;
@@ -73,15 +63,8 @@
     z-index: 10;
 }
 
-.diceTrack .keepDice span {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    margin-inline-end: -8px;
-}
-
-.diceTrack .throwDice img, .diceTrack .keepDice span {
-    transition: transform 200ms ease-out;
+.diceTrack img.icon {
+    transition: all 200ms ease-out;
 }
 
 .diceTrack .keepDice {
@@ -106,8 +89,20 @@
     width: 3rem;
 }
 
-.diceTrack .throwDice:hover img, .diceTrack .keepDice:not(:disabled):hover span {
-    transform: scale3d(1.3, 1.3, 1);
+.diceTrack .keepDice .die {
+    margin-inline-end: -6px;
+}
+
+.diceTrack .throwDice:hover img {
+    transform: scale3d(1.3, 1.3, 1) rotateZ(360deg);
+}
+
+.diceTrack .keepDice:not(:disabled):hover .arrow {
+    opacity: 0;
+}
+
+.diceTrack .keepDice:not(:disabled):hover .die {
+    transform: translateX(-30px);
 }
 
 .diceTrack .keepDice:disabled .icon {
@@ -151,8 +146,44 @@
 }
 
 .hasDiamond img {
-    height: 100%;
+    height: auto;
     inset: 0;
     position: absolute;
     width: 100%;
+}
+
+@keyframes drop {
+    from {
+        filter: drop-shadow(20px 20px 20px #000);
+        opacity: 0;
+        transform: rotateZ(0) scale(5);
+        transition: all cubic-bezier(.53, .22, .73, .28);
+    }
+    to {
+        filter: drop-shadow(2px 2px 4px #000);
+        opacity: 1;
+        transform: rotateZ(-14deg) scale(1);
+    }
+}
+
+.busted {
+    align-items: center;
+    animation: drop 400ms forwards;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    position: absolute;
+    width: 100%;
+    z-index: 100;
+}
+
+.busted span {
+    background-color: rgb(115 0 0/ 40%);
+    border-radius: var(--border-radius-l);
+    color: #fff;
+    font-size: 5rem;
+    font-weight: bolder;
+    letter-spacing: 1rem;
+    padding: 1rem 4rem;
+    text-shadow: 0 0 6px var(--danger-color);
 }

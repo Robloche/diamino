@@ -1,6 +1,6 @@
 .diamino {
     align-items: stretch;
-    background-color: blanchedalmond;
+    background-color: rgb(255 235 205);
     border: 0;
     border-radius: 6px;
     box-shadow: 0 0 2px 1px hsl(36 100% 35% / 1);
@@ -12,12 +12,19 @@
     width: var(--diamino-width);
 }
 
+.turned {
+    background-color: rgb(217 191 153);
+}
+
 .pickable {
-    cursor: pointer;
     transform: scale3d(1.1, 1.1, 1);
 }
 
-.pickable:hover{
+.pickable.hasDiamond, .stealable.hasDiamond {
+    cursor: pointer;
+}
+
+.pickable.hasDiamond:hover, .stealable.hasDiamond:hover {
     background-color: #ffdfab;
 }
 

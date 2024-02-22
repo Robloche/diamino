@@ -52,14 +52,13 @@ const Die = ({ die, isDisabled = false }) => {
   const handleOnClick = React.useCallback(() => {
     if (
       gameState === GameState.PlayingActionChoice ||
-      (chosenValue !== -1 && value !== chosenValue) ||
       forbiddenValues.has(value)
     ) {
-      // Player can only deselect chosen dice, and cannot pick a previously kept value
+      // Player cannot pick a previously kept value
       return;
     }
 
-    if (chosenValue === -1) {
+    if (value !== chosenValue) {
       chooseValue(value);
     } else {
       resetChosenValue();
@@ -76,11 +75,6 @@ const Die = ({ die, isDisabled = false }) => {
   const isChosen = value === chosenValue;
   const isForbidden =
     gameState === GameState.PlayingActionChoice || forbiddenValues.has(value);
-
-  console.log("Forbidden values:");
-  console.log(forbiddenValues);
-
-  console.log(`isForbidden: ${isForbidden}`);
 
   return (
     <AudioButton

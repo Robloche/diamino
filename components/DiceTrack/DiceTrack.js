@@ -9,12 +9,13 @@ import dieIcon from "../../assets/die.svg";
 import forbiddenIcon from "../../assets/forbidden.svg";
 import leftArrowIcon from "../../assets/left-arrow.svg";
 import styles from "./DiceTrack.module.css";
+import { BUSTED_DELAY } from "../../helpers/constants";
 
 const DiceTrack = () => {
   const {
     chosenValue,
     diceSum,
-    forbiddenValues,
+    endBustedTurn,
     gameState,
     hasDiamond,
     inPlayDice,
@@ -23,7 +24,9 @@ const DiceTrack = () => {
     throwDice,
   } = React.useContext(GameStateContext);
 
-  console.log(`gameState: ${gameState}`);
+  const handleOnAnimationEnd = () => {
+    setTimeout(endBustedTurn, BUSTED_DELAY);
+  };
 
   const isKeepDiceEnabled = chosenValue > -1;
   const isThrowDiceEnabled =
@@ -32,7 +35,9 @@ const DiceTrack = () => {
 
   const bustedElt =
     gameState === GameState.PlayingBusted ? (
-      <div className={styles.busted}>BUSTED!</div>
+      <div className={styles.busted} onAnimationEnd={handleOnAnimationEnd}>
+        <span>BUSTED!</span>
+      </div>
     ) : null;
 
   return (
@@ -53,11 +58,9 @@ const DiceTrack = () => {
       </div>
       <div className={styles.separator} />
       <div className={styles.playArea}>
-        {gameState !== GameState.Initializing &&
-          gameState !== GameState.PlayingStart &&
-          inPlayDice.map((die, i) => (
-            <Die die={die} isDisabled={isThrowDiceEnabled} key={i} />
-          ))}
+        {inPlayDice.map((die, i) => (
+          <Die die={die} isDisabled={isThrowDiceEnabled} key={i} />
+        ))}
         <div className={styles.buttonWrapper}>
           <AudioButton
             className={clsx("action", styles.diceAction, styles.throwDice)}
@@ -77,14 +80,16 @@ const DiceTrack = () => {
         disabled={!isKeepDiceEnabled}
         onClick={keepDice}
       >
-        <span>
-          <Image
-            alt="Keep die icon"
-            className={styles.icon}
-            src={leftArrowIcon}
-          />
-          <Image alt="Die icon" className={styles.icon} src={dieIcon} />
-        </span>
+        <Image
+          alt="Keep die icon"
+          className={clsx(styles.icon, styles.arrow)}
+          src={leftArrowIcon}
+        />
+        <Image
+          alt="Die icon"
+          className={clsx(styles.icon, styles.die)}
+          src={dieIcon}
+        />
       </AudioButton>
       {bustedElt}
     </div>

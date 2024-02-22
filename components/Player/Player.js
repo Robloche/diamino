@@ -6,7 +6,8 @@ import { getPlayerScore } from "../../helpers/player";
 import styles from "./Player.module.css";
 
 const Player = ({ id, player }) => {
-  const { playerIndexTurn } = React.useContext(GameStateContext);
+  const { diceSum, hasDiamond, playerIndexTurn } =
+    React.useContext(GameStateContext);
   const { diaminoes, name } = player;
 
   const topDiamino = diaminoes[0];
@@ -16,11 +17,20 @@ const Player = ({ id, player }) => {
       className={clsx(styles.player, playerIndexTurn === id && styles.playing)}
     >
       <div className={styles.name}>{name}</div>
-      <div className={styles.score}>{getPlayerScore(diaminoes)}</div>
+      <div className={styles.score}>
+        {player.diaminoes.length}
+        <span className={styles.scoreSeparator}>/</span>
+        {getPlayerScore(diaminoes)}
+      </div>
       <div
         className={clsx(styles.stackedDiaminoes, topDiamino && styles.hidden)}
       >
-        {topDiamino && <Diamino diamino={topDiamino} />}
+        {topDiamino && (
+          <Diamino
+            diamino={topDiamino}
+            isStealable={hasDiamond && topDiamino?.number === diceSum}
+          />
+        )}
       </div>
     </div>
   );

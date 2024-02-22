@@ -1,11 +1,24 @@
 import AudioButton from "../AudioButton";
 import Modal from "../Modal";
+import { PLAYER_COUNT_MAX, PLAYER_COUNT_MIN } from "../../helpers/constants";
 import React from "react";
 import { produce } from "immer";
 import styles from "./Menu.module.css";
 
-const Menu = ({ onCloseMenu, initialPlayers }) => {
-  const [players, setPlayers] = React.useState(initialPlayers);
+const Menu = ({ onCloseMenu }) => {
+  const [players, setPlayers] = React.useState(() => {
+    const players = [];
+    for (let i = 0; i < PLAYER_COUNT_MAX; ++i) {
+      players.push({
+        diaminoes: [],
+        name: "",
+        //name: `Player ${i + 1}`,
+      });
+    }
+    players[0].name = "Player 1";
+    players[1].name = "Player 2";
+    return players;
+  });
 
   const handlePlayerNameOnChange = (event) => {
     const {
@@ -23,7 +36,8 @@ const Menu = ({ onCloseMenu, initialPlayers }) => {
     onCloseMenu(players.filter(({ name }) => name !== ""));
   }, [onCloseMenu, players]);
 
-  const canStart = players.filter(({ name }) => name !== "").length > 1;
+  const canStart =
+    players.filter(({ name }) => name !== "").length >= PLAYER_COUNT_MIN;
 
   return (
     <Modal canClose={false} label="Menu">

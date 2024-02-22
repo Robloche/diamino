@@ -3,20 +3,19 @@ import { GameStateContext } from "../../providers/GameStateProvider";
 import React from "react";
 import styles from "./Diaminoes.module.css";
 import clsx from "clsx";
+import { DiaminoState } from "../../helpers/types";
 
 const Diaminoes = () => {
   const { diaminoes, diceSum } = React.useContext(GameStateContext);
 
   const pickableIndex = diaminoes.findLastIndex(
-    ({ number }) => number <= diceSum,
+    ({ number, state }) => state === DiaminoState.Normal && number <= diceSum,
   );
 
   const ghostDiamino =
     diceSum > 0 && pickableIndex === -1 ? (
       <div className={styles.ghost}>{diceSum}</div>
     ) : null;
-
-  //console.log(`diceSum: ${diceSum} | pickableIndex: ${pickableIndex}`);
 
   return (
     <div className={styles.diaminoes}>
