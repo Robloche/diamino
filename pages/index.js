@@ -1,5 +1,6 @@
 import ClientOnly from "../components/ClientOnly";
 import Game from "../components/Game";
+import GameStateProvider from '../providers/GameStateProvider';
 import Head from "next/head";
 import SettingsProvider from "../providers/SettingsProvider";
 import { enableMapSet } from "immer";
@@ -18,9 +19,11 @@ export default function Home() {
       {/*<Header />*/}
 
       <SettingsProvider>
-        <ClientOnly>
-          <Game />
-        </ClientOnly>
+        <GameStateProvider>
+          <ClientOnly>
+            <Game />
+          </ClientOnly>
+        </GameStateProvider>
       </SettingsProvider>
     </div>
   );

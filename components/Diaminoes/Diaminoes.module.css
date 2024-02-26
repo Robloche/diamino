@@ -9,7 +9,7 @@
     align-items: flex-start;
     background-color: rgb(255 0 0 / 10%);
     border: 2px dashed #6e0000;
-    border-radius: 6px;
+    border-radius: var(--border-radius-m);
     color: #6e0000;
     display: flex;
     font-size: 2rem;

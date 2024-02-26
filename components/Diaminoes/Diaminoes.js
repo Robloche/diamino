@@ -3,10 +3,14 @@ import { GameStateContext } from "../../providers/GameStateProvider";
 import React from "react";
 import styles from "./Diaminoes.module.css";
 import clsx from "clsx";
-import { DiaminoState } from "../../helpers/types";
+import { DiaminoState, GameState } from "../../helpers/types";
 
 const Diaminoes = () => {
-  const { diaminoes, diceSum } = React.useContext(GameStateContext);
+  const { diaminoes, diceSum, gameState } = React.useContext(GameStateContext);
+
+  if (gameState === GameState.GameOver) {
+    return null;
+  }
 
   const pickableIndex = diaminoes.findLastIndex(
     ({ number, state }) => state === DiaminoState.Normal && number <= diceSum,

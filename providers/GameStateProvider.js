@@ -2,11 +2,11 @@ import {
   DIAMINOES_COUNT,
   DIAMINOES_NUMBER_START,
   DICE_COUNT,
-  PLAYER_COUNT_MAX,
 } from "../helpers/constants";
 import { DiaminoState, GameState } from "../helpers/types";
 import Menu from "../components/Menu";
 import React from "react";
+import { getPlayerScore } from "../helpers/player";
 import { getRandomInteger } from "../helpers/math";
 import { produce } from "immer";
 
@@ -55,6 +55,8 @@ const GameStateProvider = ({ children }) => {
     setIsOpen(false);
     setPlayerIndexTurn(0);
     setGameState(GameState.PlayingStart);
+    // DEBUG
+    //setGameState(GameState.GameOver);
   }, []);
 
   const advanceToNextPlayer = React.useCallback(() => {
@@ -120,7 +122,21 @@ const GameStateProvider = ({ children }) => {
 
     if (liveDiaminoes.length === 0) {
       setGameState(GameState.GameOver);
+      setPlayerIndexTurn(-1);
+      setPlayers(
+        produce((draft) => {
+          draft.forEach(
+            (player) => (player.score = getPlayerScore(player.diaminoes)),
+          );
+          draft.sort((p1, p2) => p2.score - p1.score);
+        }),
+      );
       // TODO: do stuff (highlight winner, play sound, hide buttons, etc.)
+      // [x] hide diaminoes
+      // [x] hide dice track
+      // [x] sort players by decreasing points
+      // [x] display them vertically
+      // [x] expand all diaminoes in front of player cards
     }
   }, [diaminoes]);
 

@@ -24,6 +24,10 @@ const DiceTrack = () => {
     throwDice,
   } = React.useContext(GameStateContext);
 
+  if (gameState === GameState.GameOver) {
+    return null;
+  }
+
   const handleOnAnimationEnd = () => {
     setTimeout(endBustedTurn, BUSTED_DELAY);
   };

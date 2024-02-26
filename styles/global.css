@@ -57,7 +57,7 @@ body {
 button.action {
     background-color: var(--accent-color);
     border: 0;
-    border-radius: 6px;
+    border-radius: var(--border-radius-m);
     color: var(--accent-color-darker);
     cursor: pointer;
     font-weight: bold;

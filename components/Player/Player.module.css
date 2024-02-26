@@ -1,18 +1,33 @@
 .player {
+    --padding: var(--padding-s);
+    --width: 120px;
+
     align-items: center;
     background-color: var(--accent-color-darker);
-    border-radius: 6px;
+    border-radius: var(--border-radius-l);
     color: #fff;
     display: flex;
     flex-direction: column;
-    padding: 10px;
+    padding: var(--padding);
     row-gap: 5px;
     transition: background-color 200ms ease-in-out;
-    width: 120px;
+    width: var(--width);
 }
 
 .player.playing {
     background-color: var(--accent-color-dark);
+}
+
+.player.gameOver {
+    flex-direction: row;
+}
+
+.header {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    width: calc(var(--width) - var(--padding) * 2);
 }
 
 .name {
@@ -34,11 +49,19 @@
 
 .stackedDiaminoes {
     border: 2px dashed hsl(36 100% 60% / 60%);
-    border-radius: 6px;
+    border-radius: var(--border-radius-m);
     height: var(--diamino-height);
     width: var(--diamino-width);
 }
 
 .stackedDiaminoes.hidden {
     border: 0;
+}
+
+.expandedDiaminoes {
+    align-items: center;
+    column-gap: var(--padding);
+    display: flex;
+    height: var(--diamino-height);
+    margin-inline-start: calc(var(--padding) * 2);
 }

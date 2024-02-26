@@ -1,9 +1,10 @@
 import AudioButton from "../AudioButton";
 import Modal from "../Modal";
-import { PLAYER_COUNT_MAX, PLAYER_COUNT_MIN } from "../../helpers/constants";
+import {DIAMINOES_COUNT, DIAMINOES_NUMBER_START, PLAYER_COUNT_MAX, PLAYER_COUNT_MIN} from '../../helpers/constants';
 import React from "react";
 import { produce } from "immer";
 import styles from "./Menu.module.css";
+import {DiaminoState} from '../../helpers/types';
 
 const Menu = ({ onCloseMenu }) => {
   const [players, setPlayers] = React.useState(() => {
@@ -15,8 +16,26 @@ const Menu = ({ onCloseMenu }) => {
         //name: `Player ${i + 1}`,
       });
     }
-    players[0].name = "Player 1";
-    players[1].name = "Player 2";
+
+    // DEBUG
+    // players[0].name = "Player 1";
+    // for (let index = 0; index < 6; ++index) {
+    //   players[0].diaminoes.push({
+    //     number: index + DIAMINOES_NUMBER_START,
+    //     points: Math.floor(index / 4) + 1,
+    //     state: DiaminoState.Normal,
+    //   });
+    // }
+    // players[1].name = "Player 2";
+    // for (let index = 0; index < 4; ++index) {
+    //   players[1].diaminoes.push({
+    //     number: index + DIAMINOES_NUMBER_START,
+    //     points: Math.floor(index / 4) + 1,
+    //     state: DiaminoState.Normal,
+    //   });
+    // }
+    //DEBUG
+
     return players;
   });
 
