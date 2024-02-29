@@ -1,4 +1,5 @@
 import AudioButton from "../AudioButton";
+import { BUSTED_DELAY } from "../../helpers/constants";
 import Die from "../Die";
 import { GameState } from "../../helpers/types";
 import { GameStateContext } from "../../providers/GameStateProvider";
@@ -8,8 +9,8 @@ import clsx from "clsx";
 import dieIcon from "../../assets/die.svg";
 import forbiddenIcon from "../../assets/forbidden.svg";
 import leftArrowIcon from "../../assets/left-arrow.svg";
+import { motion } from "framer-motion";
 import styles from "./DiceTrack.module.css";
-import { BUSTED_DELAY } from "../../helpers/constants";
 
 const DiceTrack = () => {
   const {
@@ -47,8 +48,10 @@ const DiceTrack = () => {
   return (
     <div className={styles.diceTrack}>
       <div className={styles.keptArea}>
-        {keptDice.map((die, i) => (
-          <Die die={die} isKept={true} key={i} />
+        {keptDice.map((die) => (
+          <motion.div key={die.id} layoutId={die.id}>
+            <Die die={die} isKept={true} />
+          </motion.div>
         ))}
         <div
           className={clsx(
@@ -62,8 +65,10 @@ const DiceTrack = () => {
       </div>
       <div className={styles.separator} />
       <div className={styles.playArea}>
-        {inPlayDice.map((die, i) => (
-          <Die die={die} isDisabled={isThrowDiceEnabled} key={i} />
+        {inPlayDice.map((die) => (
+          <motion.div key={die.id} layoutId={die.id}>
+            <Die die={die} isDisabled={isThrowDiceEnabled} />
+          </motion.div>
         ))}
         <div className={styles.buttonWrapper}>
           <AudioButton
