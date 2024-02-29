@@ -136,6 +136,7 @@
 }
 
 .hasDiamond {
+    font-size: 1.4rem;
     inset-block-start: var(--margin-s);
     inset-inline-end: var(--margin-s);
     position: absolute;

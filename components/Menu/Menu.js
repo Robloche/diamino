@@ -18,7 +18,7 @@ const Menu = ({ onCloseMenu }) => {
     }
 
     // DEBUG
-    // players[0].name = "Player 1";
+    //players[0].name = "Player 1";
     // for (let index = 0; index < 6; ++index) {
     //   players[0].diaminoes.push({
     //     number: index + DIAMINOES_NUMBER_START,
@@ -26,7 +26,7 @@ const Menu = ({ onCloseMenu }) => {
     //     state: DiaminoState.Normal,
     //   });
     // }
-    // players[1].name = "Player 2";
+    //players[1].name = "Player 2";
     // for (let index = 0; index < 4; ++index) {
     //   players[1].diaminoes.push({
     //     number: index + DIAMINOES_NUMBER_START,

@@ -48,7 +48,7 @@ const DiceTrack = () => {
     <div className={styles.diceTrack}>
       <div className={styles.keptArea}>
         {keptDice.map((die, i) => (
-          <Die die={die} key={i} />
+          <Die die={die} isKept={true} key={i} />
         ))}
         <div
           className={clsx(

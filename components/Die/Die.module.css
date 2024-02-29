@@ -11,14 +11,15 @@
 }
 
 .die.disabled {
-    opacity: .7;
-}
-
-.die.forbidden {
     cursor: default;
+    opacity: .5;
 }
 
-.die:not(.forbidden):hover {
+.die.disabled.kept {
+    opacity: 1;
+}
+
+.die:not(.disabled):hover {
     outline: 4px solid #3a96dd;
 }
 

@@ -11,14 +11,13 @@ const Diamino = ({ diamino, isPickable = false, isStealable = false }) => {
   const { number, points, state } = diamino;
 
   const handleOnClick = React.useCallback(() => {
-    // if (!hasDiamond) {
-    //   return;
-    // }
+    if (!hasDiamond) {
+      return;
+    }
+
     if (isPickable) {
       // Pick diamino and end turn
       pickDiamino(diamino);
-
-      // DEBUG
       return;
     }
 

@@ -39,7 +39,7 @@ const renderElement = (score) => {
   );
 };
 
-const Die = ({ die, isDisabled = false }) => {
+const Die = ({ die, isDisabled = false, isKept = false }) => {
   const {
     chooseValue,
     chosenValue,
@@ -51,6 +51,7 @@ const Die = ({ die, isDisabled = false }) => {
 
   const handleOnClick = React.useCallback(() => {
     if (
+      isKept ||
       gameState === GameState.PlayingActionChoice ||
       forbiddenValues.has(value)
     ) {
@@ -68,6 +69,7 @@ const Die = ({ die, isDisabled = false }) => {
     chosenValue,
     forbiddenValues,
     gameState,
+    isKept,
     resetChosenValue,
     value,
   ]);
@@ -81,8 +83,8 @@ const Die = ({ die, isDisabled = false }) => {
       className={clsx(
         styles.die,
         isChosen && styles.chosen,
-        isForbidden && styles.forbidden,
-        isDisabled && styles.disabled,
+        (isDisabled || isForbidden) && styles.disabled,
+        isKept && styles.kept,
       )}
       onClick={handleOnClick}
     >

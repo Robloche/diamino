@@ -47,7 +47,9 @@ const Player = ({ id, player }) => {
     return (
       <Diamino
         diamino={topDiamino}
-        isStealable={hasDiamond && topDiamino?.number === diceSum}
+        isStealable={
+          playerIndexTurn !== id && hasDiamond && topDiamino?.number === diceSum
+        }
       />
     );
   };
