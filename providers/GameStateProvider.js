@@ -152,13 +152,15 @@ const GameStateProvider = ({ children }) => {
    * no diamino is stealable: !hasDiamond || diceSum !== every(player.diaminoes[0])
    */
   const isPlayerBusted = React.useCallback(
-    (newForbiddenValues, newDice) => {
-      const diceSum = keptDice.reduce(
+    (newKeptDice, newForbiddenValues, newDice) => {
+      const localKeptDice = newKeptDice ?? keptDice;
+
+      const diceSum = localKeptDice.reduce(
         (total, die) => total + (die.value < 6 ? die.value : 5),
         0,
       );
 
-      const hasDiamond = keptDice.some(({ value }) => value === 6);
+      const hasDiamond = localKeptDice.some(({ value }) => value === 6);
 
       const canGetDiamino =
         hasDiamond &&
@@ -167,15 +169,16 @@ const GameStateProvider = ({ children }) => {
           // Stealable
           players.some(({ diaminoes }) => diaminoes[0]?.number === diceSum));
 
-      if (newDice) {
-        if (newDice.length === 0 && !canGetDiamino) {
-          // No die remains && no diamino is pickable && no diamino is stealable
-          return true;
-        }
-        if (newDice.every(({ value }) => forbiddenValues.has(value))) {
-          // All dice values are in forbiddenValues
-          return true;
-        }
+      if (newDice.length === 0 && !canGetDiamino) {
+        // No die remains && no diamino is pickable && no diamino is stealable
+        return true;
+      }
+      if (
+        typeof newKeptDice === "undefined" &&
+        newDice.every(({ value }) => forbiddenValues.has(value))
+      ) {
+        // All dice values are in forbiddenValues
+        return true;
       }
 
       // ForbiddenValues contains all 6 values && no diamino is pickable && no diamino is stealable
@@ -228,7 +231,7 @@ const GameStateProvider = ({ children }) => {
 
   // Keep all dice of the chosen value
   const keepDice = React.useCallback(() => {
-    const newKeptDice = [];
+    const newKeptDice = [...keptDice];
     const remainingDice = [];
 
     inPlayDice.forEach((die) => {
@@ -242,18 +245,19 @@ const GameStateProvider = ({ children }) => {
     newKeptDice.sort((d1, d2) => d2.value - d1.value);
 
     // Move dice of chosen value to "kept" list
-    setKeptDice(
-      produce((draft) => {
-        draft.push(...newKeptDice);
-      }),
-    );
+    setKeptDice(newKeptDice);
     setInPlayDice(remainingDice);
 
-    const newForbiddenValues = new Set(forbiddenValues);
-    newKeptDice.forEach(({ value }) => newForbiddenValues.add(value));
+    // Update forbidden values
+    const newForbiddenValues = new Set(newKeptDice.map(({ value }) => value));
     setForbiddenValues(newForbiddenValues);
 
-    const isBusted = isPlayerBusted(newForbiddenValues, undefined);
+    // Check if player is busted
+    const isBusted = isPlayerBusted(
+      newKeptDice,
+      newForbiddenValues,
+      remainingDice,
+    );
     if (isBusted) {
       bustPlayer();
       return;
@@ -263,13 +267,14 @@ const GameStateProvider = ({ children }) => {
     setChosenValue(-1);
 
     setGameState(GameState.PlayingActionChoice);
-  }, [bustPlayer, chosenValue, forbiddenValues, inPlayDice, isPlayerBusted]);
+  }, [bustPlayer, chosenValue, inPlayDice, isPlayerBusted, keptDice]);
 
   const chooseValue = (value) => setChosenValue(value);
 
   const resetChosenValue = (dieIndex) => setChosenValue(-1);
 
   const throwDice = React.useCallback(() => {
+    // Throw remaining dice
     const newDice = inPlayDice.map(({ id }) => ({
       id,
       value: throwDie(),
@@ -277,7 +282,8 @@ const GameStateProvider = ({ children }) => {
 
     setInPlayDice(newDice);
 
-    const isBusted = isPlayerBusted(undefined, newDice);
+    // Check if player is busted
+    const isBusted = isPlayerBusted(undefined,undefined, newDice);
     if (isBusted) {
       bustPlayer();
       return;
