@@ -2,7 +2,8 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: stretch;
+  margin-block-start: 4rem;
   min-height: 100vh;
   padding: 0 0.5rem;
 }
