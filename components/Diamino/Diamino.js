@@ -25,7 +25,7 @@ const Diamino = ({ diamino, isPickable = false, isStealable = false }) => {
       // Steal the top diamino from a player
       stealDiamino(diamino);
     }
-  }, [diamino, hasDiamond, isPickable, pickDiamino, stealDiamino]);
+  }, [diamino, hasDiamond, isPickable, isStealable, pickDiamino, stealDiamino]);
 
   const diamonds = [];
   for (let i = 0; i < points; ++i) {
