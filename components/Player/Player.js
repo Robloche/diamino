@@ -1,10 +1,11 @@
 import Diamino from "../Diamino";
+import { GameState } from "../../helpers/types";
 import { GameStateContext } from "../../providers/GameStateProvider";
 import React from "react";
 import clsx from "clsx";
 import { getPlayerScore } from "../../helpers/player";
+import { motion } from "framer-motion";
 import styles from "./Player.module.css";
-import { GameState } from "../../helpers/types";
 
 const Player = ({ id, player }) => {
   const { diceSum, gameState, hasDiamond, playerIndexTurn } =
@@ -34,9 +35,11 @@ const Player = ({ id, player }) => {
   const renderDiaminoesElt = () => {
     if (gameState === GameState.GameOver) {
       // Display all expanded diaminoes (they are revealed one by one)
-      return diaminoes
-        .slice(0, expandedCount)
-        .map((diamino) => <Diamino diamino={diamino} key={diamino.number} />);
+      return diaminoes.slice(0, expandedCount).map((diamino) => (
+        <motion.div key={diamino.number} layoutId={diamino.number}>
+          <Diamino diamino={diamino} />
+        </motion.div>
+      ));
     }
 
     // Display only top diamino, if any
@@ -45,12 +48,16 @@ const Player = ({ id, player }) => {
     }
 
     return (
-      <Diamino
-        diamino={topDiamino}
-        isStealable={
-          playerIndexTurn !== id && hasDiamond && topDiamino?.number === diceSum
-        }
-      />
+      <motion.div layoutId={topDiamino.number}>
+        <Diamino
+          diamino={topDiamino}
+          isStealable={
+            playerIndexTurn !== id &&
+            hasDiamond &&
+            topDiamino?.number === diceSum
+          }
+        />
+      </motion.div>
     );
   };
 

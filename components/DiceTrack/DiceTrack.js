@@ -65,11 +65,12 @@ const DiceTrack = () => {
       </div>
       <div className={styles.separator} />
       <div className={styles.playArea}>
-        {inPlayDice.map((die) => (
-          <motion.div key={die.id} layoutId={die.id}>
-            <Die die={die} isDisabled={isThrowDiceEnabled} />
-          </motion.div>
-        ))}
+        {gameState !== GameState.Initializing &&
+          inPlayDice.map((die) => (
+            <motion.div key={die.id} layoutId={die.id}>
+              <Die die={die} isDisabled={isThrowDiceEnabled} />
+            </motion.div>
+          ))}
         <div className={styles.buttonWrapper}>
           <AudioButton
             className={clsx("action", styles.diceAction, styles.throwDice)}

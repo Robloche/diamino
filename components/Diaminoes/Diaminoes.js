@@ -1,9 +1,9 @@
+import { DiaminoState, GameState } from "../../helpers/types";
 import Diamino from "../Diamino";
 import { GameStateContext } from "../../providers/GameStateProvider";
 import React from "react";
+import { motion } from "framer-motion";
 import styles from "./Diaminoes.module.css";
-import clsx from "clsx";
-import { DiaminoState, GameState } from "../../helpers/types";
 
 const Diaminoes = () => {
   const { diaminoes, diceSum, gameState } = React.useContext(GameStateContext);
@@ -25,7 +25,9 @@ const Diaminoes = () => {
     <div className={styles.diaminoes}>
       {ghostDiamino}
       {diaminoes.map((diamino, i) => (
-        <Diamino diamino={diamino} isPickable={pickableIndex === i} key={i} />
+        <motion.div key={diamino.number} layoutId={diamino.number}>
+          <Diamino diamino={diamino} isPickable={pickableIndex === i} />
+        </motion.div>
       ))}
     </div>
   );
