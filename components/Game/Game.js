@@ -1,7 +1,6 @@
 import AudioButton from "../AudioButton";
 import Diaminoes from "../Diaminoes";
 import DiceTrack from "../DiceTrack";
-import { GameState } from "../../helpers/types";
 import { GameStateContext } from "../../providers/GameStateProvider";
 import Image from "next/image";
 import Players from "../Players";
@@ -13,18 +12,28 @@ import styles from "./Game.module.css";
 
 const Game = () => {
   const { openSettings } = React.useContext(SettingsContext);
-  const { gameState } = React.useContext(GameStateContext);
+  const { bustPlayer, dbgSetDice, endGame, pickDiamino } =
+    React.useContext(GameStateContext);
+
+  // DEBUG
+  React.useEffect(() => {
+    window.dbg = {
+      bustPlayer,
+      endGame,
+      pickDiamino,
+      setDice: dbgSetDice,
+    };
+  }, [bustPlayer, endGame, pickDiamino, dbgSetDice]);
+  // DEBUG
+
+  const handleOpenSettings = () => openSettings(false);
 
   return (
     <div className={styles.game}>
       <Diaminoes />
       <AudioButton
-        className={clsx(
-          "action",
-          styles.settings,
-          gameState === GameState.GameOver && styles.hidden,
-        )}
-        onClick={openSettings}
+        className={clsx("action icon", styles.settings)}
+        onClick={handleOpenSettings}
       >
         <Image alt="Settings icon" src={settingsIcon} />
       </AudioButton>

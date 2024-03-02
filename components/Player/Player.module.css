@@ -52,6 +52,7 @@
     border: 2px dashed hsl(36 100% 60% / 60%);
     border-radius: var(--border-radius-m);
     height: var(--diamino-height);
+    margin-block-end: var(--margin-s);
     width: var(--diamino-width);
 }
 

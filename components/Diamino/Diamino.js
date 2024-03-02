@@ -5,7 +5,12 @@ import React from "react";
 import clsx from "clsx";
 import styles from "./Diamino.module.css";
 
-const Diamino = ({ diamino, isPickable = false, isStealable = false }) => {
+const Diamino = ({
+  diamino,
+  isPickable = false,
+  isStacked = false,
+  isStealable = false,
+}) => {
   const { hasDiamond, pickDiamino, stealDiamino } =
     React.useContext(GameStateContext);
   const { number, points, state } = diamino;
@@ -17,7 +22,7 @@ const Diamino = ({ diamino, isPickable = false, isStealable = false }) => {
 
     if (isPickable) {
       // Pick diamino and end turn
-      pickDiamino(diamino);
+      pickDiamino(diamino.number);
       return;
     }
 
@@ -43,6 +48,7 @@ const Diamino = ({ diamino, isPickable = false, isStealable = false }) => {
         isPickable && styles.pickable,
         isStealable && styles.stealable,
         hasDiamond && styles.hasDiamond,
+        isStacked && styles.stacked,
       )}
       onClick={handleOnClick}
     >

@@ -1,7 +1,8 @@
 import ClientOnly from "../components/ClientOnly";
-import Game from "../components/Game";
-import GameStateProvider from '../providers/GameStateProvider';
+import GameStateProvider from "../providers/GameStateProvider";
+import GameWrapper from "../components/GameWrapper";
 import Head from "next/head";
+import { LayoutGroup } from "framer-motion";
 import SettingsProvider from "../providers/SettingsProvider";
 import { enableMapSet } from "immer";
 import styles from "../styles/Home.module.css";
@@ -21,7 +22,9 @@ export default function Home() {
       <SettingsProvider>
         <GameStateProvider>
           <ClientOnly>
-            <Game />
+            <LayoutGroup>
+              <GameWrapper />
+            </LayoutGroup>
           </ClientOnly>
         </GameStateProvider>
       </SettingsProvider>

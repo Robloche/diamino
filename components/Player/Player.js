@@ -2,12 +2,14 @@ import Diamino from "../Diamino";
 import { GameState } from "../../helpers/types";
 import { GameStateContext } from "../../providers/GameStateProvider";
 import React from "react";
+import { SettingsContext } from "../../providers/SettingsProvider";
 import clsx from "clsx";
 import { getPlayerScore } from "../../helpers/player";
 import { motion } from "framer-motion";
 import styles from "./Player.module.css";
 
 const Player = ({ id, player }) => {
+  const { settings } = React.useContext(SettingsContext);
   const { diceSum, gameState, hasDiamond, playerIndexTurn } =
     React.useContext(GameStateContext);
   const [finalScore, setFinalScore] = React.useState(0);
@@ -32,34 +34,9 @@ const Player = ({ id, player }) => {
     setFinalScore((current) => current + diaminoes[expandedCount - 1].points);
   }, [expandedCount]);
 
-  const renderDiaminoesElt = () => {
-    if (gameState === GameState.GameOver) {
-      // Display all expanded diaminoes (they are revealed one by one)
-      return diaminoes.slice(0, expandedCount).map((diamino) => (
-        <motion.div key={diamino.number} layoutId={diamino.number}>
-          <Diamino diamino={diamino} />
-        </motion.div>
-      ));
-    }
-
-    // Display only top diamino, if any
-    if (!topDiamino) {
-      return null;
-    }
-
-    return (
-      <motion.div layoutId={topDiamino.number}>
-        <Diamino
-          diamino={topDiamino}
-          isStealable={
-            playerIndexTurn !== id &&
-            hasDiamond &&
-            topDiamino?.number === diceSum
-          }
-        />
-      </motion.div>
-    );
-  };
+  // When game is over, diaminoes are expanded horizontally and revealed one by one
+  const lastDisplayedIndex =
+    gameState === GameState.GameOver ? expandedCount : diaminoes.length;
 
   return (
     <div
@@ -75,14 +52,19 @@ const Player = ({ id, player }) => {
           {gameState !== GameState.GameOver ? (
             <>
               {player.diaminoes.length}
-              <span className={styles.scoreSeparator}>/</span>
-              {getPlayerScore(diaminoes)}
+              {settings.showScore && (
+                <>
+                  <span className={styles.scoreSeparator}>/</span>
+                  {getPlayerScore(diaminoes)}
+                </>
+              )}
             </>
           ) : (
             finalScore
           )}
         </div>
       </div>
+      {/* Player's diaminoes */}
       <div
         className={clsx(
           gameState === GameState.GameOver
@@ -91,7 +73,32 @@ const Player = ({ id, player }) => {
           topDiamino && styles.hidden,
         )}
       >
-        {renderDiaminoesElt()}
+        {diaminoes
+          .slice(0, lastDisplayedIndex)
+          .reverse()
+          .map((diamino) => (
+            <motion.div
+              key={diamino.number}
+              layout="position"
+              layoutId={diamino.number}
+              transition={{
+                type: "spring",
+                stiffness: 500,
+                damping: 100,
+                // damping: 40 + coinIndex * 5,
+              }}
+            >
+              <Diamino
+                diamino={diamino}
+                isStacked={gameState !== GameState.GameOver}
+                isStealable={
+                  playerIndexTurn !== id &&
+                  hasDiamond &&
+                  diamino.number === diceSum
+                }
+              />
+            </motion.div>
+          ))}
       </div>
     </div>
   );

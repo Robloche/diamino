@@ -1,13 +1,8 @@
-.game {
+.gameOver {
     align-items: center;
     display: flex;
     flex-direction: column;
     justify-content: stretch;
     position: relative;
     row-gap: 20px;
-}
-
-.game .settings {
-    align-self: flex-end;
-    margin-block: -10px -20px;
 }

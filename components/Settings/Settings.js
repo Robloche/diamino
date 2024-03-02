@@ -3,43 +3,82 @@ import Modal from "../Modal";
 import React from "react";
 import { SettingsContext } from "../../providers/SettingsProvider";
 import styles from "./Settings.module.css";
+import {
+  DIAMINOES_COUNT,
+  DIAMINOES_NUMBER_START,
+} from "../../helpers/constants";
 
 const Settings = ({ onCloseSettings, onSaveSettings, settings }) => {
+  const [diaminoMaxNumber, setDiaminoMaxNumber] = React.useState(
+    settings.diaminoMaxNumber,
+  );
+  const [showScore, setShowScore] = React.useState(settings.showScore);
   const [sound, setSound] = React.useState(settings.sound);
   const [stealHint, setStealHint] = React.useState(settings.stealHint);
 
-  const { defaultSettings } = React.useContext(SettingsContext);
+  const { defaultSettings, isInitializing } = React.useContext(SettingsContext);
 
+  const diaminoMaxNumberId = React.useId();
+  const showScoreId = React.useId();
   const soundId = React.useId();
   const stealHintId = React.useId();
 
-  const soundOnChange = React.useCallback((event) => {
-    setSound(event.target.checked);
+  const diaminoMaxNumberOnChange = React.useCallback((event) => {
+    setDiaminoMaxNumber(event.target.value);
+  }, []);
+
+  const showScoreOnChange = React.useCallback((event) => {
+    setShowScore(event.target.checked);
   }, []);
 
   const stealHintOnChange = React.useCallback((event) => {
     setStealHint(event.target.checked);
   }, []);
 
+  const soundOnChange = React.useCallback((event) => {
+    setSound(event.target.checked);
+  }, []);
+
   const resetOnClick = React.useCallback(() => {
-    setSound(defaultSettings.sound);
+    setDiaminoMaxNumber(defaultSettings.diaminoMaxNumber);
+    setShowScore(defaultSettings.showScore);
     setStealHint(defaultSettings.stealHint);
-  }, [defaultSettings.sound, defaultSettings.stealHint]);
+    setSound(defaultSettings.sound);
+  }, [
+    defaultSettings.diaminoMaxNumber,
+    defaultSettings.showScore,
+    defaultSettings.sound,
+    defaultSettings.stealHint,
+  ]);
 
   const saveOnClick = React.useCallback(() => {
     onSaveSettings({ sound, stealHint });
-  }, [sound, stealHint]);
+  }, [diaminoMaxNumber, showScore, sound, stealHint]);
+
+  console.log(isInitializing);
 
   return (
     <Modal label="Settings" onClose={onCloseSettings}>
       <div className={styles.content}>
-        <label htmlFor={soundId} className={styles.label}>
-          Enable sound:
+        <label htmlFor={diaminoMaxNumberId} className={styles.label}>
+          Diaminoes range:
         </label>
         <input
-          checked={sound}
-          id={soundId}
-          onChange={soundOnChange}
+          disabled={!isInitializing}
+          id={diaminoMaxNumberId}
+          max={40}
+          min={21}
+          onChange={diaminoMaxNumberOnChange}
+          type="number"
+          value={diaminoMaxNumber}
+        />
+        <label htmlFor={showScoreId} className={styles.label}>
+          Show scores while playing:
+        </label>
+        <input
+          checked={showScore}
+          id={showScoreId}
+          onChange={showScoreOnChange}
           type="checkbox"
         />
         <label htmlFor={stealHintId}>Show stealable diaminoes:</label>
@@ -47,6 +86,15 @@ const Settings = ({ onCloseSettings, onSaveSettings, settings }) => {
           checked={stealHint}
           id={stealHintId}
           onChange={stealHintOnChange}
+          type="checkbox"
+        />
+        <label htmlFor={soundId} className={styles.label}>
+          Enable sound:
+        </label>
+        <input
+          checked={sound}
+          id={soundId}
+          onChange={soundOnChange}
           type="checkbox"
         />
       </div>
@@ -60,7 +108,7 @@ const Settings = ({ onCloseSettings, onSaveSettings, settings }) => {
         </AudioButton>
       </div>
       <AudioButton className={`action ${styles.saveBtn}`} onClick={saveOnClick}>
-        Save & Close
+        SAVE & CLOSE
       </AudioButton>
     </Modal>
   );

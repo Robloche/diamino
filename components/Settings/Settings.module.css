@@ -22,6 +22,10 @@
     width: 2rem;
 }
 
+.content input {
+    margin-inline: auto;
+}
+
 .dangerZone {
     align-items: center;
     display: grid;

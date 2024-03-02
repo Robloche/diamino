@@ -25,7 +25,7 @@ const Modal = ({ canClose = true, children, label, onClose }) => {
           {children}
           {canClose && (
             <AudioButton
-              className={clsx("action", styles.closeBtn)}
+              className={clsx("action icon", styles.closeBtn)}
               onClick={onClose}
             >
               <Image alt="Close icon" src={closeIcon} />

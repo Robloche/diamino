@@ -2,6 +2,7 @@
     align-items: stretch;
     display: flex;
     flex-direction: column;
+    position: relative;
     row-gap: var(--margin-s);
 }
 
@@ -11,9 +12,17 @@
     text-align: center;
 }
 
-.content .hint{
+.content .hint {
     background-color: var(--accent-color-lighter);
     border-radius: var(--border-radius-s);
     font-size: .9rem;
     padding: 10px;
+}
+
+.settings {
+    --offset: calc(var(--padding-l) * -1);
+
+    position: absolute;
+    right: var(--offset);
+    top: var(--offset);
 }

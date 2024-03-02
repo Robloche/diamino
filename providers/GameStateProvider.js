@@ -55,8 +55,6 @@ const GameStateProvider = ({ children }) => {
     setIsOpen(false);
     setPlayerIndexTurn(0);
     setGameState(GameState.PlayingStart);
-    // DEBUG
-    //setGameState(GameState.GameOver);
   }, []);
 
   const advanceToNextPlayer = React.useCallback(() => {
@@ -69,18 +67,25 @@ const GameStateProvider = ({ children }) => {
   }, [players]);
 
   const pickDiamino = React.useCallback(
-    (diamino) => {
+    (diaminoNumber) => {
       // Remove diamino from diaminoes
+      const index = diaminoes.findIndex(
+        ({ number }) => number === diaminoNumber,
+      );
+
+      if (index === -1) {
+        // Diamino not found
+        return;
+      }
+
       setDiaminoes(
         produce((draft) => {
-          const index = draft.findIndex(
-            ({ number }) => number === diamino.number,
-          );
           draft.splice(index, 1);
         }),
       );
 
       // Add diamino to player (at first position)
+      const diamino = diaminoes[index];
       setPlayers(
         produce((draft) => {
           draft[playerIndexTurn].diaminoes.unshift(diamino);
@@ -90,7 +95,7 @@ const GameStateProvider = ({ children }) => {
       // Next player
       advanceToNextPlayer();
     },
-    [advanceToNextPlayer, playerIndexTurn],
+    [advanceToNextPlayer, diaminoes, playerIndexTurn],
   );
 
   const stealDiamino = React.useCallback(
@@ -114,6 +119,46 @@ const GameStateProvider = ({ children }) => {
     [advanceToNextPlayer, playerIndexTurn],
   );
 
+  const endGame = React.useCallback((players = undefined) => {
+    setGameState(GameState.GameOver);
+    setPlayerIndexTurn(-1);
+
+    // Compute scores
+    setPlayers(
+      produce((draft) => {
+        if (typeof players !== "undefined") {
+          // Used passed players to fully configure the game
+          draft.length = 0;
+          players.forEach(({ diaminoes, name }) =>
+            draft.push({
+              diaminoes: diaminoes.map((number) => ({
+                number,
+                points: Math.floor((number - DIAMINOES_NUMBER_START) / 4) + 1,
+                state: DiaminoState.Normal,
+              })),
+              name,
+            }),
+          );
+        }
+
+        draft.forEach(
+          (player) => (player.score = getPlayerScore(player.diaminoes)),
+        );
+        draft.sort((p1, p2) => p2.score - p1.score);
+      }),
+    );
+  }, []);
+
+  const startNewGame = React.useCallback(() => {
+    // TODO: reset diaminoes + players + dice + open settings
+    setGameState(GameState.Initializing);
+  }, []);
+
+  const startRematch = React.useCallback(() => {
+    // TODO: reset diaminoes + players' diaminoes + dice + open settings
+    setGameState(GameState.Initializing);
+  }, []);
+
   // Check game over
   React.useEffect(() => {
     const liveDiaminoes = diaminoes.filter(
@@ -121,24 +166,9 @@ const GameStateProvider = ({ children }) => {
     );
 
     if (liveDiaminoes.length === 0) {
-      setGameState(GameState.GameOver);
-      setPlayerIndexTurn(-1);
-      setPlayers(
-        produce((draft) => {
-          draft.forEach(
-            (player) => (player.score = getPlayerScore(player.diaminoes)),
-          );
-          draft.sort((p1, p2) => p2.score - p1.score);
-        }),
-      );
-      // TODO: do stuff (highlight winner, play sound, hide buttons, etc.)
-      // [x] hide diaminoes
-      // [x] hide dice track
-      // [x] sort players by decreasing points
-      // [x] display them vertically
-      // [x] expand all diaminoes in front of player cards
+      endGame();
     }
-  }, [diaminoes]);
+  }, [diaminoes, endGame]);
 
   /*
    * Player busted if:
@@ -283,7 +313,7 @@ const GameStateProvider = ({ children }) => {
     setInPlayDice(newDice);
 
     // Check if player is busted
-    const isBusted = isPlayerBusted(undefined,undefined, newDice);
+    const isBusted = isPlayerBusted(undefined, undefined, newDice);
     if (isBusted) {
       bustPlayer();
       return;
@@ -312,13 +342,38 @@ const GameStateProvider = ({ children }) => {
 
   const hasDiamond = keptDice.some(({ value }) => value === 6);
 
+  const dbgSetDice = React.useCallback(
+    (newInPlayValues = undefined, newKeptValues = undefined) => {
+      const changeValues = (dice, newValues) => {
+        dice.forEach((die, i) => {
+          const newValue = newValues[i];
+          if (typeof newValue === "number") {
+            die.value = newValue;
+          }
+        });
+      };
+
+      if (typeof newInPlayValues !== "undefined") {
+        setInPlayDice(produce((draft) => changeValues(draft, newInPlayValues)));
+      }
+
+      if (typeof newKeptValues !== "undefined") {
+        setKeptDice(produce((draft) => changeValues(draft, newKeptValues)));
+      }
+    },
+    [],
+  );
+
   const value = React.useMemo(
     () => ({
+      bustPlayer,
       chooseValue,
       chosenValue,
+      dbgSetDice,
       diaminoes,
       diceSum,
       endBustedTurn,
+      endGame,
       forbiddenValues,
       gameState,
       hasDiamond,
@@ -329,14 +384,19 @@ const GameStateProvider = ({ children }) => {
       playerIndexTurn,
       players,
       resetChosenValue,
+      startNewGame,
+      startRematch,
       stealDiamino,
       throwDice,
     }),
     [
+      bustPlayer,
       chooseValue,
       chosenValue,
+      dbgSetDice,
       diaminoes,
       endBustedTurn,
+      endGame,
       forbiddenValues,
       gameState,
       inPlayDice,
@@ -346,6 +406,8 @@ const GameStateProvider = ({ children }) => {
       playerIndexTurn,
       players,
       resetChosenValue,
+      startNewGame,
+      startRematch,
       stealDiamino,
       throwDice,
     ],

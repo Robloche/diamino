@@ -25,7 +25,17 @@ const Diaminoes = () => {
     <div className={styles.diaminoes}>
       {ghostDiamino}
       {diaminoes.map((diamino, i) => (
-        <motion.div key={diamino.number} layoutId={diamino.number}>
+        <motion.div
+          key={diamino.number}
+          layout="position"
+          layoutId={diamino.number}
+          transition={{
+            type: "spring",
+            stiffness: 500,
+            damping: 100,
+            // damping: 40 + coinIndex * 5,
+          }}
+        >
           <Diamino diamino={diamino} isPickable={pickableIndex === i} />
         </motion.div>
       ))}

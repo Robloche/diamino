@@ -8,6 +8,7 @@
     --accent-color-dark: #2a6da1;
     --accent-color-darker: #133249;
     --danger-color: #ff0000;
+    --danger-color-light: #ff6969;
 
     /* Diamino */
     --diamino-height: 100px;
@@ -58,20 +59,32 @@ button.action {
     background-color: var(--accent-color);
     border: 0;
     border-radius: var(--border-radius-m);
-    color: var(--accent-color-darker);
+    color: var(--accent-color-lighter);
     cursor: pointer;
     font-weight: bold;
     padding: 8px 20px;
 }
 
+button.action.icon {
+    padding: 4px;
+}
+
 button.action:not(:disabled):hover {
-    background-color: var(--accent-color-dark);
+    background-color: var(--accent-color-light);
 }
 
 button.action:disabled {
     color: var(--accent-color-dark);
     cursor: default;
     opacity: .5;
+}
+
+button.action.danger {
+    background-color: var(--danger-color);
+}
+
+button.action.danger:hover {
+    background-color: var(--danger-color-light);
 }
 
 input[type='checkbox'] {
@@ -89,4 +102,13 @@ input[type='checkbox']:hover {
 
 input[type='checkbox']:checked {
     background-color: var(--accent-color);
+}
+
+input[type='number'] {
+    background-color: var(--accent-color-dark);
+    border: 0;
+    border-radius: var(--border-radius-s);
+    color: var(--accent-color-lighter);
+    padding-inline-start: var(--padding-s);
+    width: 3.2rem;
 }

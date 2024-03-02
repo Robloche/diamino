@@ -12,6 +12,10 @@
     width: var(--diamino-width);
 }
 
+.stacked {
+    position: absolute;
+}
+
 .turned {
     background-color: rgb(217 191 153);
 }
