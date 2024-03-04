@@ -13,12 +13,14 @@ const GameOver = () => {
       <h1>💎Diamino💎</h1>
       <h2>FINAL RANKING</h2>
       <Players />
-      <AudioButton className="action" onClick={startRematch}>
-        REMATCH
-      </AudioButton>
-      <AudioButton className="action" onClick={startNewGame}>
-        NEW GAME
-      </AudioButton>
+      <div className={styles.actions}>
+        <AudioButton className="action" onClick={startRematch}>
+          REMATCH
+        </AudioButton>
+        <AudioButton className="action" onClick={startNewGame}>
+          NEW GAME
+        </AudioButton>
+      </div>
     </div>
   );
 };

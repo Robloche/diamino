@@ -4,6 +4,7 @@ import { GameStateContext } from "../../providers/GameStateProvider";
 import React from "react";
 import clsx from "clsx";
 import styles from "./Diamino.module.css";
+import { SettingsContext } from "../../providers/SettingsProvider";
 
 const Diamino = ({
   diamino,
@@ -11,6 +12,7 @@ const Diamino = ({
   isStacked = false,
   isStealable = false,
 }) => {
+  const { settings } = React.useContext(SettingsContext);
   const { hasDiamond, pickDiamino, stealDiamino } =
     React.useContext(GameStateContext);
   const { number, points, state } = diamino;
@@ -47,13 +49,14 @@ const Diamino = ({
         styles.diamino,
         isPickable && styles.pickable,
         isStealable && styles.stealable,
+        isStealable && hasDiamond && settings.stealHint && styles.hint,
         hasDiamond && styles.hasDiamond,
         isStacked && styles.stacked,
       )}
       onClick={handleOnClick}
     >
       <div className={styles.number}>{number}</div>
-      <div className={styles.points}>
+      <div className={clsx(styles.points, points >= 5 && styles.fivePlus)}>
         {diamonds.map((d, i) => (
           <span key={i}>{d}</span>
         ))}

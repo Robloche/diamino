@@ -32,7 +32,7 @@ const SettingsProvider = ({ children }) => {
       setSettings(newSettings);
       storeSettings(newSettings);
     },
-    [settings],
+    [],
   );
 
   const value = React.useMemo(

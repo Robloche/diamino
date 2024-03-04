@@ -27,7 +27,7 @@
 
 .separator {
     border-inline-end: 4px #004600 dashed;
-    height: 100%;
+    height: calc(100% - 6px);
 }
 
 .gameNameWrapper {

@@ -1,11 +1,8 @@
-import {
-  DIAMINOES_COUNT,
-  DIAMINOES_NUMBER_START,
-  DICE_COUNT,
-} from "../helpers/constants";
+import { DIAMINOES_NUMBER_START, DICE_COUNT } from "../helpers/constants";
 import { DiaminoState, GameState } from "../helpers/types";
 import Menu from "../components/Menu";
 import React from "react";
+import { SettingsContext } from "./SettingsProvider";
 import { getPlayerScore } from "../helpers/player";
 import { getRandomInteger } from "../helpers/math";
 import { produce } from "immer";
@@ -26,7 +23,8 @@ const resetDice = () => {
 };
 
 const GameStateProvider = ({ children }) => {
-  const [isOpen, setIsOpen] = React.useState(true);
+  const { settings } = React.useContext(SettingsContext);
+  const [isMenuOpen, setIsMenuOpen] = React.useState(true);
   const [gameState, setGameState] = React.useState(GameState.Initializing);
   const [playerIndexTurn, setPlayerIndexTurn] = React.useState(-1);
   const [chosenValue, setChosenValue] = React.useState(-1);
@@ -36,26 +34,41 @@ const GameStateProvider = ({ children }) => {
 
   const [players, setPlayers] = React.useState([]);
 
-  const [diaminoes, setDiaminoes] = React.useState(() => {
+  const [diaminoes, setDiaminoes] = React.useState([]);
+
+  const resetDiaminoes = React.useCallback(() => {
     const diaminoes = [];
-    for (let index = 0; index < DIAMINOES_COUNT; ++index) {
+    for (
+      let index = 0;
+      index < settings.diaminoMaxNumber - DIAMINOES_NUMBER_START + 1;
+      ++index
+    ) {
       diaminoes.push({
         number: index + DIAMINOES_NUMBER_START,
         points: Math.floor(index / 4) + 1,
         state: DiaminoState.Normal,
       });
     }
-    return diaminoes;
-  });
 
-  const openMenu = React.useCallback(() => setIsOpen(true), []);
+    setDiaminoes(diaminoes);
+  }, [settings.diaminoMaxNumber]);
 
-  const closeMenu = React.useCallback((players) => {
-    setPlayers(players);
-    setIsOpen(false);
+  const startGame = React.useCallback(() => {
+    resetDiaminoes();
     setPlayerIndexTurn(0);
     setGameState(GameState.PlayingStart);
   }, []);
+
+  const openMenu = React.useCallback(() => setIsMenuOpen(true), []);
+
+  const closeMenu = React.useCallback(
+    (players) => {
+      setIsMenuOpen(false);
+      setPlayers(players);
+      startGame();
+    },
+    [resetDiaminoes, startGame],
+  );
 
   const advanceToNextPlayer = React.useCallback(() => {
     setPlayerIndexTurn((current) => (current + 1) % players.length);
@@ -142,22 +155,35 @@ const GameStateProvider = ({ children }) => {
         }
 
         draft.forEach(
-          (player) => (player.score = getPlayerScore(player.diaminoes)),
+          (player) => (player.finaleScore = getPlayerScore(player.diaminoes)),
         );
-        draft.sort((p1, p2) => p2.score - p1.score);
+        draft.sort((p1, p2) => p2.finaleScore - p1.finaleScore);
       }),
     );
   }, []);
 
   const startNewGame = React.useCallback(() => {
-    // TODO: reset diaminoes + players + dice + open settings
+    setDiaminoes([]);
+    setInPlayDice(resetDice());
+    setKeptDice([]);
+    setPlayers([]);
     setGameState(GameState.Initializing);
+    setIsMenuOpen(true);
   }, []);
 
   const startRematch = React.useCallback(() => {
-    // TODO: reset diaminoes + players' diaminoes + dice + open settings
-    setGameState(GameState.Initializing);
-  }, []);
+    setKeptDice([]);
+    setInPlayDice(resetDice());
+    setPlayers(
+      produce((draft) => {
+        draft.forEach((player) => {
+          player.diaminoes = [];
+          player.finaleScore = 0;
+        });
+      }),
+    );
+    startGame();
+  }, [startGame]);
 
   // Check game over
   React.useEffect(() => {
@@ -416,7 +442,7 @@ const GameStateProvider = ({ children }) => {
   return (
     <GameStateContext.Provider value={value}>
       {children}
-      {isOpen && <Menu initialPlayers={players} onCloseMenu={closeMenu} />}
+      {isMenuOpen && <Menu initialPlayers={players} onCloseMenu={closeMenu} />}
     </GameStateContext.Provider>
   );
 };

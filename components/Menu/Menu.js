@@ -1,12 +1,12 @@
-import {PLAYER_COUNT_MAX, PLAYER_COUNT_MIN} from '../../helpers/constants';
+import { PLAYER_COUNT_MAX, PLAYER_COUNT_MIN } from "../../helpers/constants";
 import AudioButton from "../AudioButton";
-import Image from 'next/image';
+import Image from "next/image";
 import Modal from "../Modal";
 import React from "react";
-import {SettingsContext} from '../../providers/SettingsProvider';
-import clsx from 'clsx';
+import { SettingsContext } from "../../providers/SettingsProvider";
+import clsx from "clsx";
 import { produce } from "immer";
-import settingsIcon from '../../assets/settings.svg';
+import settingsIcon from "../../assets/settings.svg";
 import styles from "./Menu.module.css";
 
 const Menu = ({ onCloseMenu }) => {
@@ -16,7 +16,8 @@ const Menu = ({ onCloseMenu }) => {
     for (let i = 0; i < PLAYER_COUNT_MAX; ++i) {
       players.push({
         diaminoes: [],
-        name: ""
+        finaleScore: 0,
+        name: "",
       });
     }
 

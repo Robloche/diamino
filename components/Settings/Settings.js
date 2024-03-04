@@ -52,7 +52,7 @@ const Settings = ({ onCloseSettings, onSaveSettings, settings }) => {
   ]);
 
   const saveOnClick = React.useCallback(() => {
-    onSaveSettings({ sound, stealHint });
+    onSaveSettings({ diaminoMaxNumber, showScore, sound, stealHint });
   }, [diaminoMaxNumber, showScore, sound, stealHint]);
 
   console.log(isInitializing);
@@ -61,7 +61,7 @@ const Settings = ({ onCloseSettings, onSaveSettings, settings }) => {
     <Modal label="Settings" onClose={onCloseSettings}>
       <div className={styles.content}>
         <label htmlFor={diaminoMaxNumberId} className={styles.label}>
-          Diaminoes range:
+          Max diamino:
         </label>
         <input
           disabled={!isInitializing}

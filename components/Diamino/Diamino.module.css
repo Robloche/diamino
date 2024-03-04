@@ -32,6 +32,10 @@
     background-color: #ffdfab;
 }
 
+.hint {
+    outline: 2px solid red;
+}
+
 .number {
     font-size: 2rem;
     font-weight: bold;
@@ -44,4 +48,8 @@
     flex-basis: 100%;
     flex-wrap: wrap;
     justify-content: center;
+}
+
+.points.fivePlus {
+    font-size: .7rem;
 }

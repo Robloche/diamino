@@ -21,6 +21,7 @@
 
 .player.gameOver {
     flex-direction: row;
+    width: auto;
 }
 
 .header {
@@ -66,4 +67,5 @@
     display: flex;
     height: var(--diamino-height);
     margin-inline-start: calc(var(--padding) * 2);
+    width: calc((50px + var(--padding)) * 5);
 }

@@ -1,8 +1,21 @@
 .gameOver {
     align-items: center;
+    background-color: var(--accent-color-dark);
+    border-radius: var(--border-radius-l);
     display: flex;
     flex-direction: column;
     justify-content: stretch;
+    padding: var(--padding-l);
     position: relative;
     row-gap: 20px;
+}
+
+.gameOver h2 {
+    color: var(--accent-color-light);
+}
+
+.actions {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--margin-s);
 }
